@@ -29,7 +29,9 @@ def process(request):
         return Response('No sources found.. sorry.')
     db = psycopg2.connect(settings.DB_DSN)
     cursor = db.cursor()
-    cursor.execute('INSERT INTO yt_file (url) values (%s) RETURNING yt_file', (link,))
+    cursor.execute("SELECT yt_file FROM yt_file WHERE url = %s AND status NOT ILIKE '%%fail%%'", (link,))
+    if not cursor.rowcount:
+        cursor.execute('INSERT INTO yt_file (url) values (%s) RETURNING yt_file', (link,))
     (yt_file) = cursor.fetchone()
     cursor.close()
     db.commit()
