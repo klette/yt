@@ -14,7 +14,8 @@ while True:
         source = get_available_sources(url)
         filename = convert_to_mp3(source, db, yt_file)
         if filename:
-            shutil.move(filename + ".mp3", os.path.join(MP3_DIR, '%s.mp3' % yt_file))
+            shutil.move(filename + ".mp3", os.path.join(settings.MP3_DIR, '%s.mp3' % yt_file))
+            shutil.os.unlink(filename)
     cursor.close()
     db.close()
 
