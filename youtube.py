@@ -3,6 +3,7 @@ import urllib
 import sys
 import os
 import tempfile
+from lxml import html
 
 class HTMLFetchException(Exception):
     pass
@@ -37,6 +38,11 @@ def get_available_sources(link):
         raise ParseError()
 
 
+def get_metadata(link):
+    doc = html.parse('http://www.youtube.com/oembed?url=%s&format=xml' % link)
+    title = doc.getroot().cssselect('title')[0].text
+    thumb = doc.getroot().cssselect('thumbnail_url')[0].text
+    return {'title': title, 'thumb': thumb}
 
 def convert_to_mp3(link, db, yt_file):
     filename = tempfile.mktemp(suffix='.flv')

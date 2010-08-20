@@ -27,6 +27,7 @@ def process(request):
         source = get_available_sources(link)
     except:
         return Response('No sources found.. sorry.')
+    metadata = get_metadata(link)
     db = psycopg2.connect(settings.DB_DSN)
     cursor = db.cursor()
     cursor.execute("SELECT yt_file FROM yt_file WHERE url = %s AND status NOT ILIKE '%%fail%%'", (link,))
@@ -36,7 +37,12 @@ def process(request):
     cursor.close()
     db.commit()
     db.close()
-    return Response(tr.render('process.html', {'#yt_file/id': 'id_%s' % yt_file}))
+    return Response(tr.render('process.html',
+        {
+            '#yt_file/id': 'id_%s' % yt_file,
+            '#thumb/src': metadata['thumb'],
+            '#name': metadata['title'],
+        }))
 
 @route('/report')
 def report(request, yt_file):
