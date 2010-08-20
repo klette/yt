@@ -1,0 +1,24 @@
+body
+{
+	/*background-image:url(/media/bg.jpg);
+	background-repeat:repeat;
+	*/
+	color:#333;
+	font-size:1.125em;
+	line-height:1.5em;
+}
+
+h1,h2 {
+	font-family: Georgia, serif;
+}
+
+.container {
+	width: 400px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+a, a:visited {
+	color: #333;
+}
